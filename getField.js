@@ -1,5 +1,5 @@
 const fs = require('fs');
-const sendmail = require('sendmail')();
+// const sendmail = require('sendmail')();
 const lib = require('lodash');
 var mongoose = require("mongoose");
 var address = "mongodb+srv://ariekfiri:CLZR4KxsjdTTGbz@cluster0-dmeus.gcp.mongodb.net/test?retryWrites=true&w=majority";
