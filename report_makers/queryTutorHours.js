@@ -6,15 +6,22 @@ const path = require("path");
 
 const {Trainee, Tutor, Report, Institute, AcademicDetail} = require("../models/models");
 
-var months = ["2019-10", "2019-11", "2019-12", "2020-01"];
-
 class Tutors extends Reporter {
     constructor(month) {
         super(month, 'tutors.csv');
         this.bigTable = [];
-        if(!months.includes(month)){
-            months.push(month);
-        }
+        fs.readFile('./months.json', (err, data) => {
+            this.months = JSON.parse(data);
+            if(!this.months.includes(month)){
+                this.months.push(month);
+                fs.writeFile("./months.json", JSON.stringify(this.months), () => {});
+
+            } else {
+                const index = this.months.indexOf(month);
+                this.months = this.months.slice(0, index + 1);
+            }
+        })
+        
     }
     createData = () => {
         return new Promise(async (resolve) => {
@@ -24,14 +31,13 @@ class Tutors extends Reporter {
 
     createReport = () => {
         return new Promise(async (resolve) => {
+            let csvContent = "";
             const tutors = await Tutor.find({}, 'fname lname isImpact');
             Promise.all(tutors.map((tutor) => this.getFullHours(tutor))).then((result) => {
                 this.bigTable = result;
-                let csvContent = "";
-                const headers = ["Full name"];
-                months.forEach((month) => {
-                    headers.push(month + "-studying");
-                    headers.push(month + "-total");
+                const headers = ["Full name", "Is Impact"];
+                this.months.forEach((month) => {
+                    headers.push(month + "-studying", month + "-total");
                 })
                 headers.push("Total studying hours", "Total hours");
             
@@ -39,19 +45,16 @@ class Tutors extends Reporter {
                 this.bigTable.forEach(function(rowArray) {
                     let row = rowArray.join(";");
                     csvContent += row + "\r\n";
-                });
-                fs.writeFile(path.resolve(path.join(__dirname, `../reports/${this.filename}`)),csvContent, function (err) {
-                        if (err) throw err;
-                        console.log('Saved!');
-                });                    
+                }); 
+                resolve(csvContent);                
             })
-            resolve();
+            
         })
     }
 
     getFullHours = (tutor) => {
         return new Promise(async (resolve) => {
-            const results =  await Promise.all(months.map(month => this.getOneMonthHours(tutor, month)));
+            const results =  await Promise.all(this.months.map(month => this.getOneMonthHours(tutor, month)));
             let totalTeaching = 0;
             let total = 0;
             const finalArr = [];
@@ -62,7 +65,7 @@ class Tutors extends Reporter {
             })
             finalArr.push(totalTeaching, total);
             const fullName = `${tutor._doc.lname} ${tutor._doc.fname}`;
-            finalArr.unshift(fullName);
+            finalArr.unshift(fullName, tutor._doc.isImpact);
             resolve(finalArr);
         })
     }

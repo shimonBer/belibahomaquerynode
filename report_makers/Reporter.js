@@ -21,11 +21,7 @@ class Reporter {
                 let row = rowArray.join(";");
                 csvContent += row + "\r\n";
             });
-            fs.writeFile(path.resolve(path.join(__dirname, `../reports/${this.filename}`)), csvContent, function (err) {
-                if (err) throw err;
-                    console.log('Saved!');
-                    return resolve();
-            });
+            return resolve(csvContent);
         }) 
     }
 }
