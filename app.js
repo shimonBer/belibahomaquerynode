@@ -25,46 +25,30 @@ app.use('/api/auth', AuthControllerRouter);
 app.use(tokenVerifier);
 
 
-const createDownload = (req, res) => {
-    const month = req.query.month;
-    const filename = req.query.filename;
-    res.sendFile(path.resolve(path.join(__dirname, `./reports/${month}-${filename}`)), function(err){
-        if(err) {
-            console.log(err);
-        }else{
-            console.log('successfully sent the file');
-        }
-    });
-
-}
 app.get("/reports/queryTutorsHours", function(req, res, next) {
     req.query.reporter = tutorsGenerator;
-    req.query.filename = 'tutors.csv';
     next();
 })
 
 
 app.get("/reports/queryKivunA", function(req, res, next) {
     req.query.reporter = kivunAGenerator;
-    req.query.filename = 'kivunA.csv';
     next();
 })
 
 app.get("/reports/queryKivunB", function(req, res, next) {
     req.query.reporter = kivunBGenerator;
-    req.query.filename = 'kivunB.csv';
     next();
 })
 
 app.get("/reports/queryKivunC", function(req, res, next) {
     req.query.reporter = kivunCGenerator;
-    req.query.filename = 'kivunC.csv';
     next();
 })
 
 
 app.get("/reports/*", asyncMiddleware, function(req, res) {
-    createDownload(req, res);
+    res.send(res.locals.report);
 })
 
 
