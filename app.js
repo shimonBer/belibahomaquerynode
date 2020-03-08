@@ -1,18 +1,18 @@
 const express = require('express');
 const mongoose = require("mongoose");
-const path = require('path');
 const tutorsGenerator = require("./report_makers/queryTutorHours");
 const kivunAGenerator = require("./report_makers/queryKivunA");
 const kivunBGenerator = require("./report_makers/queryKivunB");
 const kivunCGenerator = require("./report_makers/queryKivunC");
-const {AuthControllerRouter, tokenVerifier} = require('./auth/authController');
+const { AuthControllerRouter, tokenVerifier } = require('./auth/authController');
 const asyncMiddleware = require("./middleware/middleware");
 const bodyParser = require('body-parser');
 const accessControls = require('./auth/accessControls');
-var cors = require('cors');
+const cors = require('cors');
+const { connectionstring } = require('./config');
 
 
-const address =  process.env.address || "mongodb+srv://ariekfiri:CLZR4KxsjdTTGbz@cluster0-dmeus.gcp.mongodb.net/test?retryWrites=true&w=majority";
+const address =  process.env.address || connectionstring;
 
 const app = express();
 
