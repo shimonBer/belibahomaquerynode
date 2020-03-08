@@ -1,6 +1,3 @@
-const fs = require('fs');
-const path = require("path");
-
 class Reporter {
     constructor(month, filename) {
         if(this.constructor === Reporter) {

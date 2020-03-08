@@ -7,7 +7,7 @@ const Reporter = require("./Reporter");
 const asyncForEach = require("../helpFunction");
 
 
-const {Trainee, Tutor, Report, Institute, AcademicDetail} = require("../models/models");
+const {Trainee, Report } = require("../models/models");
 
 class KivunC extends Reporter {
     constructor(month) {
