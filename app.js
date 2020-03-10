@@ -6,12 +6,12 @@ const { connectionstring } = require('./util/config');
 const { tokenMiddleware } = require('./middleware/auth');
 const { reportRouter } = require('./routes/reports');
 const { authRouter } = require('./routes/auth');
-var cors = require('cors')
+const cors = require('cors')
 
 const address = process.env.ENVIRONMENT === 'dev' ? connectionstring : process.env.ADDRESS;
 const app = express();
 
-app.use(cors()) 
+app.use(cors({origin: '*'}));
 app.use(accessControls);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
