@@ -40,7 +40,8 @@ router.post('/login', function(req, res) {
       if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
       
       const expires =  86400;
-      var token = jwt.sign({ id: user._id }, config.secret, {
+      let secret = process.env.ENVIRONMENT ==='dev' ? config.secret : process.env.SECRET;
+      var token = jwt.sign({ id: user._id }, secret, {
         expiresIn: expires // expires in 24 hours
       });
       
