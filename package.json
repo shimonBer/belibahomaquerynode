@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./app.js"
+    "start": "export ENVIRONMENT='prod' && node ./app.js",
+    "start-dev": "export ENVIRONMENT='dev' && node ./app.js"
   },
   "author": "",
   "license": "ISC",

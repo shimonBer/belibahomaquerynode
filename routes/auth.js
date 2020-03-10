@@ -3,11 +3,12 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-var {Admin} = require('../models/models');
+var { Admin } = require('../models/models');
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-var config = require('../config');
+var config = require('../util/config');
+
 
 // router.post('/register', function(req, res) {
   
@@ -28,18 +29,6 @@ var config = require('../config');
 //     }); 
 //   });
 
-const verifyToken = (req, res, next) => {
-  var token = req.headers['x-access-token'];
-  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
-  
-  jwt.verify(token, config.secret, function(err, decoded) {
-    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-    
-    // res.status(200).send(decoded);
-    next();
-    
-  });
-};
 
 router.post('/login', function(req, res) {
 
@@ -61,6 +50,5 @@ router.post('/login', function(req, res) {
   });
 
   module.exports = {
-    AuthControllerRouter: router,
-    tokenVerifier: verifyToken
+    authRouter: router,
   }

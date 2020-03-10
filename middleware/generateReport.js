@@ -1,5 +1,5 @@
 
-const asyncMiddleware = async (req, res, next) => {
+const generateReportMiddleware = async (req, res, next) => {
     const month = req.query.month;
     const reportersInstance = req.query.reporter(month);
     await reportersInstance.createData();
@@ -7,4 +7,4 @@ const asyncMiddleware = async (req, res, next) => {
     next();
 }
 
-module.exports = asyncMiddleware;
+module.exports = generateReportMiddleware;
