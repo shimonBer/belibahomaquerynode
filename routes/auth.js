@@ -7,7 +7,6 @@ var { Admin } = require('../models/models');
 
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
-var config = require('../util/config');
 
 
 // router.post('/register', function(req, res) {
@@ -22,7 +21,10 @@ var config = require('../util/config');
 //     function (err, user) {
 //       if (err) return res.status(500).send("There was a problem registering the user.")
 //       // create a token
-//       var token = jwt.sign({ id: user._id }, config.secret, {
+      // if (process.env.ENVIRONMENT !== 'prod') {
+      //   require('dotenv').load();
+      // }
+//       var token = jwt.sign({ id: user._id }, process.env.SECRET, {
 //         expiresIn: 86400 // expires in 24 hours
 //       });
 //       res.status(200).send({ auth: true, token: token });
@@ -40,8 +42,10 @@ router.post('/login', function(req, res) {
       if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
       
       const expires =  86400;
-      let secret = process.env.ENVIRONMENT ==='dev' ? config.secret : process.env.SECRET;
-      var token = jwt.sign({ id: user._id }, secret, {
+      if (process.env.ENVIRONMENT !== 'prod') {
+        require('dotenv').config({path: '../.env'});
+      }
+      var token = jwt.sign({ id: user._id }, process.env.SECRET, {
         expiresIn: expires // expires in 24 hours
       });
       
