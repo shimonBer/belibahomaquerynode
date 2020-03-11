@@ -4,7 +4,7 @@ const lib = require('lodash');
 var mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectId; 
 const Reporter = require("./Reporter");
-const asyncForEach = require("../helpFunction");
+const asyncForEach = require("../util/helpFunction");
 
 
 const {Trainee, Report } = require("../models/models");
