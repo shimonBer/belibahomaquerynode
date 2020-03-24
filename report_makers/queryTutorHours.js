@@ -30,7 +30,6 @@ class Tutors extends Reporter {
 
     createReport = () => {
         return new Promise(async (resolve) => {
-            let csvContent = "";
             const tutors = await Tutor.find({}, 'fname lname isImpact');
             Promise.all(tutors.map((tutor) => this.getFullHours(tutor))).then((result) => {
                 this.bigTable = result;
@@ -41,11 +40,8 @@ class Tutors extends Reporter {
                 headers.push("Total studying hours", "Total hours");
             
                 this.bigTable.unshift(headers);
-                this.bigTable.forEach(function(rowArray) {
-                    let row = rowArray.join(";");
-                    csvContent += row + "\r\n";
-                }); 
-                resolve(csvContent);                
+                
+                resolve(this.bigTable);                
             })
             
         })

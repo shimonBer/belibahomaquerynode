@@ -13,12 +13,12 @@ class Reporter {
     createReport = () => {
         return new Promise((resolve) => {
 
-            let csvContent = "";
-            this.bigTable.forEach(function(rowArray) {
-                let row = rowArray.join(";");
-                csvContent += row + "\r\n";
-            });
-            return resolve(csvContent);
+            // let csvContent = "";
+            // this.bigTable.forEach(function(rowArray) {
+            //     let row = rowArray.join(";");
+            //     csvContent += row + "\r\n";
+            // });
+            return resolve(this.bigTable);
         }) 
     }
 }

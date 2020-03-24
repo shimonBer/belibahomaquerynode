@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config({ path: '.env'});
+}
 const express = require('express');
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
@@ -7,9 +10,6 @@ const { reportRouter } = require('./routes/reports');
 const { authRouter } = require('./routes/auth');
 const cors = require('cors')
 
-if (process.env.ENVIRONMENT !== 'prod') {
-    require('dotenv').config({ path: '.env'});
-}
 const app = express();
 
 app.use(cors({origin: '*'}));
