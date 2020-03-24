@@ -1,3 +1,7 @@
 /node_modules
 .vscode/launch.json
-config.js
+.env
+auth/beliba-homa-reports-firebase.json
+/reports
+/report_makers/users.js
+/report_makers/users.txt
