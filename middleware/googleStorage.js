@@ -3,9 +3,10 @@ const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({credentials: JSON.parse(process.env.FIREBASE_CONFIG)});
 const uploadFileToCloudStroage = async (req, res, next) => {
     const bucketName = 'beliba-homa-reports';
-    const filename = `reports/${req.query.fullFilename}`;
+    const path = `reports/${req.query.filename}`;
+    const downloadURL = `https://storage.cloud.google.com/${bucketName}/${req.query.filename}`
     try {
-      await storage.bucket(bucketName).upload(filename, {
+      await storage.bucket(bucketName).upload(path, {
         // Support for HTTP requests made with `Accept-Encoding: gzip`
         gzip: true,
         // By setting the option `destination`, you can change the name of the
@@ -17,12 +18,13 @@ const uploadFileToCloudStroage = async (req, res, next) => {
           cacheControl: 'public, max-age=31536000',
         },
       });
-      console.log(`${filename} uploaded to ${bucketName}.`);
+      console.log(`${req.query.filename} uploaded to ${bucketName}.`);
+      req.query.downloadURL = downloadURL;
+
 
     } catch(e){
       console.log(e);
     }
-    
 
     next();
 };
