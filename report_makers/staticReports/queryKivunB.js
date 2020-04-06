@@ -1,8 +1,8 @@
 var ObjectId = require('mongodb').ObjectId; 
-const asyncForEach = require("../util/helpFunction");
-const Reporter = require("./Reporter");
+const asyncForEach = require("../../util/helpFunction");
+const Reporter = require("../Reporter");
 
-const { Trainee } = require("../models/models");
+const { Trainee } = require("../../models/models");
 
 
 class KivunB extends Reporter{

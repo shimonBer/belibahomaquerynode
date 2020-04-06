@@ -5,16 +5,18 @@ const generateXlsxFile = require('../middleware/xlsxGenerator');
 const uploadFileToCloudStroage = require('../middleware/googleStorage');
 const generateReportMiddleware = require('../middleware/generateReport');
 const { setValueRedis, client } = require('../middleware/redis'); 
-const tutorsGenerator = require("../report_makers/queryTutorHours");
-const kivunAGenerator = require("../report_makers/queryKivunA");
-const kivunBGenerator = require("../report_makers/queryKivunB");
-const kivunCGenerator = require("../report_makers/queryKivunC");
+const tutorsGenerator = require("../report_makers/staticReports/queryTutorHours");
+const kivunAGenerator = require("../report_makers/staticReports/queryKivunA");
+const kivunBGenerator = require("../report_makers/staticReports/queryKivunB");
+const kivunCGenerator = require("../report_makers/staticReports/queryKivunC");
+const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents");
 
 const reportGenerators = {
     queryTutorsHours: tutorsGenerator,
     queryKivunA: kivunAGenerator,
     queryKivunB: kivunBGenerator,
-    queryKivunC: kivunCGenerator
+    queryKivunC: kivunCGenerator,
+    queryGeneralParticipents: generalParticipentsGenerator
 }
 
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -35,6 +37,11 @@ router.get("/staticReport", function(req, res, next) {
             next();
         }
     });
+})
+
+router.get("/reportNames", function(req, res) {
+    res.send(Object.keys(reportGenerators));
+
 })
 
 router.get("/*", generateReportMiddleware, generateXlsxFile, uploadFileToCloudStroage, setValueRedis, function(req, res) {

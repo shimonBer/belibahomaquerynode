@@ -1,9 +1,9 @@
 const fs = require('fs');
 const lib = require('lodash');
 var mongoose = require("mongoose");
-const Reporter = require("./Reporter");
+const Reporter = require("../Reporter");
 
-const { Tutor, Report } = require("../models/models");
+const { Tutor, Report } = require("../../models/models");
 
 class Tutors extends Reporter {
     constructor(month) {
