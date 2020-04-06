@@ -1,9 +1,9 @@
 var ObjectId = require('mongodb').ObjectId; 
 const lib = require('lodash');
 var mongoose = require("mongoose");
-const { Trainee, Tutor, Report, Institute, AcademicDetail } = require("../models/models");
-const asyncForEach = require("../util/helpFunction");
-const Reporter = require("./Reporter");
+const { Trainee, Tutor, Report, Institute, AcademicDetail } = require("../../models/models");
+const asyncForEach = require("../../util/helpFunction");
+const Reporter = require("../Reporter");
 
 
 class KivunA extends Reporter{

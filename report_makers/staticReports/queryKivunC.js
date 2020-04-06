@@ -3,11 +3,11 @@ const fs = require('fs');
 const lib = require('lodash');
 var mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectId; 
-const Reporter = require("./Reporter");
-const asyncForEach = require("../util/helpFunction");
+const Reporter = require("../Reporter");
+const asyncForEach = require("../../util/helpFunction");
 
 
-const {Trainee, Report } = require("../models/models");
+const {Trainee, Report } = require("../../models/models");
 
 class KivunC extends Reporter {
     constructor(month) {
