@@ -22,21 +22,28 @@ const reportGenerators = {
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
+// router.get("/staticReport", function(req, res, next) {
+//     req.query.reportName = `${req.query.reportType}_${req.query.month}`;
+//     client.get(req.query.reportName, function(err, value) {
+//         if(value){
+//             res.send({downloadURL: value});
+//         } else {
+//             if(err){
+//                 console.log(err);
+//                 return;
+//             }
+//             req.query.filename = `${req.query.reportName}.xlsx`;
+//             req.query.reporter = reportGenerators[req.query.reportType];
+//             next();
+//         }
+//     });
+// })
+
 router.get("/staticReport", function(req, res, next) {
     req.query.reportName = `${req.query.reportType}_${req.query.month}`;
-    client.get(req.query.reportName, function(err, value) {
-        if(value){
-            res.send({downloadURL: value});
-        } else {
-            if(err){
-                console.log(err);
-                return;
-            }
-            req.query.filename = `${req.query.reportName}.xlsx`;
-            req.query.reporter = reportGenerators[req.query.reportType];
-            next();
-        }
-    });
+    req.query.filename = `${req.query.reportName}.xlsx`;
+    req.query.reporter = reportGenerators[req.query.reportType];
+    next();
 })
 
 router.get("/reportNames", function(req, res) {
@@ -44,7 +51,11 @@ router.get("/reportNames", function(req, res) {
 
 })
 
-router.get("/*", generateReportMiddleware, generateXlsxFile, uploadFileToCloudStroage, setValueRedis, function(req, res) {
+// router.get("/*", generateReportMiddleware, generateXlsxFile, uploadFileToCloudStroage, setValueRedis, function(req, res) {
+//     res.send({downloadURL: req.query.downloadURL});
+// })
+
+router.get("/*", generateReportMiddleware, generateXlsxFile, uploadFileToCloudStroage, function(req, res) {
     res.send({downloadURL: req.query.downloadURL});
 })
 
