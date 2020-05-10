@@ -24,9 +24,9 @@ class KivunC extends Reporter {
                         this.bigTable.push([`${trainee._doc.fname} ${trainee._doc.lname}`]);
                         let trainee_arr = reports.map((report) => {
                             if(report._doc.to && report._doc.from){
-                                return `${report._doc.date.toDateString()}, ${report._doc.studyTime} study hours: ${report._doc.from} - ${report._doc.to}`
+                                return `${report._doc.date}, ${report._doc.studyTime} study hours: ${report._doc.from} - ${report._doc.to}`
                             }else{
-                                return `${report._doc.date.toDateString()}, ${report._doc.studyTime} study hours`;
+                                return `${report._doc.date}, ${report._doc.studyTime} study hours`;
                             }
                         })
                         this.bigTable.push(trainee_arr);
