@@ -30,10 +30,10 @@ class Tutors extends Reporter {
 
     createReport = () => {
         return new Promise(async (resolve) => {
-            const tutors = await Tutor.find({}, 'fname lname isImpact');
+            const tutors = await Tutor.find({}, 'fname lname isImpact phoneA');
             Promise.all(tutors.map((tutor) => this.getFullHours(tutor))).then((result) => {
                 this.bigTable = result;
-                const headers = ["Full name", "Is Impact"];
+                const headers = ["Full name", "Is Impact", "Mobile"];
                 this.months.forEach((month) => {
                     headers.push(month + "-studying", month + "-total");
                 })
@@ -60,7 +60,7 @@ class Tutors extends Reporter {
             })
             finalArr.push(totalTeaching, total);
             const fullName = `${tutor._doc.lname} ${tutor._doc.fname}`;
-            finalArr.unshift(fullName, tutor._doc.isImpact);
+            finalArr.unshift(fullName, tutor._doc.isImpact, tutor._doc.phoneA);
             resolve(finalArr);
         })
     }
