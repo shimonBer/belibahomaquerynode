@@ -40,6 +40,9 @@ router.use(bodyParser.json());
 // })
 
 router.get("/staticReport", function(req, res, next) {
+    // const io = req.app.get('socketio');
+    res.sendStatus(200);
+  
     req.query.reportName = `${req.query.reportType}_${req.query.month}`;
     req.query.filename = `${req.query.reportName}.xlsx`;
     req.query.reporter = reportGenerators[req.query.reportType];
@@ -56,7 +59,10 @@ router.get("/reportNames", function(req, res) {
 // })
 
 router.get("/*", generateReportMiddleware, generateXlsxFile, uploadFileToCloudStroage, function(req, res) {
-    res.send({downloadURL: req.query.downloadURL});
+    // res.send({downloadURL: req.query.downloadURL});
+    const io = req.app.get('socketio');
+    io.emit("finishReport", {downloadURL: req.query.downloadURL});
+
 })
 
   module.exports = {
