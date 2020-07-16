@@ -8,6 +8,20 @@ const asyncForEach = require("../../util/helpFunction");
 
 const { Trainee, Report } = require("../../models/models");
 
+function formatDate(date) {
+    let d = new Date(date)
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [day, month, year].join('-');
+}
+
 class KivunC extends Reporter {
     constructor(month) {
         super(month, "kivunC.csv");
@@ -42,13 +56,13 @@ class KivunC extends Reporter {
                         ]);
                         let trainee_arr = reports.map((report) => {
                             if (report._doc.to && report._doc.from) {
-                                return `${report._doc.date.toString()}, ${
+                                return `${formatDate(report._doc.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
                                     report._doc.studyTime
                                 } study hours: ${report._doc.from} - ${
                                     report._doc.to
                                 }`;
                             } else {
-                                return `${report._doc.date.toString()}, ${
+                                return `${formatDate(report._doc.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
                                     report._doc.studyTime
                                 } study hours`;
                             }
