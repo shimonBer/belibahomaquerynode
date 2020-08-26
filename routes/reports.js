@@ -11,6 +11,8 @@ const kivunBGenerator = require("../report_makers/staticReports/queryKivunB");
 const kivunCGenerator = require("../report_makers/staticReports/queryKivunC");
 const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents");
 const generalParticipentsServedGenerator = require("../report_makers/staticReports/queryGeneralParticipentsServed");
+const allMonthsHoursGenerator = require("../report_makers/staticReports/queryMonthlyHours");
+
 
 
 const reportGenerators = {
@@ -19,7 +21,8 @@ const reportGenerators = {
     queryKivunB: kivunBGenerator,
     queryKivunC: kivunCGenerator,
     queryGeneralParticipents: generalParticipentsGenerator,
-    queryGeneralParticipentsServed: generalParticipentsServedGenerator
+    queryGeneralParticipentsServed: generalParticipentsServedGenerator,
+    queryAllMonthsHoursGenerator: allMonthsHoursGenerator
 }
 
 router.use(bodyParser.urlencoded({ extended: false }));

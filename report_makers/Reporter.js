@@ -1,8 +1,9 @@
 class Reporter {
-    constructor(month, filename) {
+    constructor(client, month, filename) {
         if(this.constructor === Reporter) {
             throw new error("cannot instansiate this class");
         }
+        this.client = client;
         this.month = month;
         this.filename = `${month}-${filename}`;
     }
