@@ -6,14 +6,14 @@ const Reporter = require("../Reporter");
 const { Tutor, Report } = require("../../models/models");
 
 class Tutors extends Reporter {
-    constructor(month) {
-        super(month, 'tutors.csv');
+    constructor(client, month) {
+        super(client, month, 'tutors.csv');
         this.bigTable = [];
-        fs.readFile('./months.json', (err, data) => {
+        fs.readFile('/Users/shimon.ber/beliba_homa_project/querying/report_makers/staticReports/months.json', (err, data) => {
             this.months = JSON.parse(data);
             if(!this.months.includes(month)){
                 this.months.push(month);
-                fs.writeFile("./months.json", JSON.stringify(this.months), () => {});
+                fs.writeFile("/Users/shimon.ber/beliba_homa_project/querying/report_makers/staticReports/months.json", JSON.stringify(this.months), () => {});
 
             } else {
                 const index = this.months.indexOf(month);
@@ -24,13 +24,14 @@ class Tutors extends Reporter {
     }
     createData = () => {
         return new Promise(async (resolve) => {
+            const trainees = await this.client.db("test").collection("trainees").find({isServed: true}, 'fname lname institute isServed').toArray();
             resolve();
         });
     }
 
     createReport = () => {
         return new Promise(async (resolve) => {
-            const tutors = await Tutor.find({}, 'fname lname isImpact phoneA');
+            const tutors = await this.client.db("test").collection("tutors").find({}, 'fname lname isImpact phoneA').toArray();
             Promise.all(tutors.map((tutor) => this.getFullHours(tutor))).then((result) => {
                 this.bigTable = result;
                 const headers = ["Full name", "Is Impact", "Mobile"];
@@ -59,26 +60,26 @@ class Tutors extends Reporter {
                 finalArr.push(arr[0], arr[1]);
             })
             finalArr.push(totalTeaching, total);
-            const fullName = `${tutor._doc.lname} ${tutor._doc.fname}`;
-            finalArr.unshift(fullName, tutor._doc.isImpact, tutor._doc.phoneA);
+            const fullName = `${tutor.lname} ${tutor.fname}`;
+            finalArr.unshift(fullName, tutor.isImpact, tutor.phoneA);
             resolve(finalArr);
         })
     }
     
     getOneMonthHours = (tutor, month) => {
         return new Promise(async (resolve) => {
-            const reports = await Report.find({tutor_id: new mongoose.Types.ObjectId(tutor.id), date: {"$gte": new Date(month + "-01"), "$lt": new Date(month + "-31")}});
+            const reports = await this.client.db("test").collection("reports").find({tutor_id: tutor._id, date: {"$gte": new Date(month + "-01"), "$lt": new Date(month + "-31")}}).toArray();
             const totalHours = await lib.sumBy(
                 reports, 
                 val => {
-                return val._doc.totalTime;
+                return val.totalTime;
                 }
             );
                 
             const teachingHours = await lib.sumBy(
                 reports,
                 val => {
-                return (val._doc.studyTime + val._doc.chavrutaTime);
+                return (val.studyTime + val.chavrutaTime);
                 }
             );
     
@@ -91,9 +92,9 @@ class Tutors extends Reporter {
 
 
 
-tutorsSingelton = (month) => {
+tutorsSingelton = (client, month) => {
     if(!Tutors.tutorsOnlyInstance) {
-        const tutorsOnlyInstance = new Tutors(month);
+        const tutorsOnlyInstance = new Tutors(client, month);
         return tutorsOnlyInstance;
     } 
     return Tutors.tutorsOnlyInstance;

@@ -23,13 +23,13 @@ function formatDate(date) {
 }
 
 class KivunC extends Reporter {
-    constructor(month) {
-        super(month, "kivunC.csv");
+    constructor(client, month) {
+        super(client, month, "kivunC.csv");
         this.bigTable = [];
     }
     createData = () => {
         return new Promise(async (resolve) => {
-            const trainees = await Trainee.find(
+            const trainees = await this.client.db("test").collection("trainees").find(
                 {
                     "realAddress.city": "ירושלים",
                     institute: {
@@ -37,33 +37,33 @@ class KivunC extends Reporter {
                     },
                 },
                 "fname lname"
-            );
+            ).toArray();
             await asyncForEach(trainees, async (trainee) => {
                 try {
-                    let reports = await Report.find(
+                    let reports = await this.client.db("test").collection("reports").find(
                         {
-                            trainee_id: new ObjectId(trainee.id),
+                            trainee_id: trainee._id,
                             date: {
                                 $gte: new Date(this.month + "-01"),
                                 $lt: new Date(this.month + "-31"),
                             },
                         },
                         "from to date studyTime"
-                    );
+                    ).toArray();
                     if (reports && reports.length > 0) {
                         this.bigTable.push([
-                            `${trainee._doc.fname} ${trainee._doc.lname}`,
+                            `${trainee.fname} ${trainee.lname}`,
                         ]);
                         let trainee_arr = reports.map((report) => {
-                            if (report._doc.to && report._doc.from) {
-                                return `${formatDate(report._doc.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
-                                    report._doc.studyTime
-                                } study hours: ${report._doc.from} - ${
-                                    report._doc.to
+                            if (report.to && report.from) {
+                                return `${formatDate(report.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
+                                    report.studyTime
+                                } study hours: ${report.from} - ${
+                                    report.to
                                 }`;
                             } else {
-                                return `${formatDate(report._doc.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
-                                    report._doc.studyTime
+                                return `${formatDate(report.date.toLocaleString("he-IL", {timeZone: "Asia/Jerusalem"}))}, ${
+                                    report.studyTime
                                 } study hours`;
                             }
                         });
@@ -78,9 +78,9 @@ class KivunC extends Reporter {
     };
 }
 
-kivunCSingelton = (month) => {
+kivunCSingelton = (client, month) => {
     if (!KivunC.kivunCOnlyInstance) {
-        const kivunCOnlyInstance = new KivunC(month);
+        const kivunCOnlyInstance = new KivunC(client, month);
         return kivunCOnlyInstance;
     }
     return KivunC.kivunCOnlyInstance;

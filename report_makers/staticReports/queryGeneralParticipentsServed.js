@@ -1,4 +1,3 @@
-var ObjectId = require('mongodb').ObjectId; 
 const lib = require('lodash');
 var mongoose = require("mongoose");
 const { Trainee, Tutor, Report, Institute, AcademicDetail } = require("../../models/models");
@@ -8,23 +7,23 @@ const fs = require('fs');
 
 
 class GeneralParticipentsServed extends Reporter{
-    constructor(month) {
-        super(month, 'generalParticipentsServed.csv');
+    constructor(client, month) {
+        super(client, month, 'generalParticipentsServed.csv');
         this.bigTable = [];
     }
     
      createData = () => {
         return new Promise(async (resolve) => {
-            const trainees = await Trainee.find({isServed: true}, 'fname lname institute isServed');
-            const institutes = await Institute.find({});
+            const trainees = await this.client.db("test").collection("trainees").find({isServed: true}, 'fname lname institute isServed').toArray();
+            const institutes = await this.client.db("test").collection("institutes").find({}).toArray();
             const instituteMapping = {};
             institutes.forEach((institute) => {
-                instituteMapping[new mongoose.Types.ObjectId(institute._doc._id)] = institute._doc.name;
+                instituteMapping[institute._id] = institute.name;
             })
             this.bigTable.push(['Full name', 'Institue', 'isServed'])
           
             trainees.forEach((trainee) => {
-                this.bigTable.push([trainee._doc.fname + " " + trainee._doc.lname, instituteMapping[new mongoose.Types.ObjectId(trainee._doc.institute)], trainee._doc.isServed])
+                this.bigTable.push([trainee.fname + " " + trainee.lname, instituteMapping[trainee.institute], trainee.isServed])
 
 
             })
@@ -39,9 +38,9 @@ class GeneralParticipentsServed extends Reporter{
     
 }
 
-generalParticipentsServedSingelton = (month) => {
+generalParticipentsServedSingelton = (client, month) => {
     if(!GeneralParticipentsServed.generalParticipentsServedOnlyInstance) {
-        const generalParticipentsServedOnlyInstance = new GeneralParticipentsServed(month);
+        const generalParticipentsServedOnlyInstance = new GeneralParticipentsServed(client, month);
         return generalParticipentsServedOnlyInstance;
     } 
     return GeneralParticipentsServed.generalParticipentsServedOnlyInstance;
