@@ -37,7 +37,13 @@ app.use("/api/queries", mongoQueries)
 
 io.on("connection", (socket) => {
     console.log("connected socket")
+    io.on("disconnect", () =>{
+        console.log("socket disconnected")
+        socket.disconnect(0);
+    });
 })
+
+
 
 http.listen(port, () => {
     console.log("listening on port " + port)
