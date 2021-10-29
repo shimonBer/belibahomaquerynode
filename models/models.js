@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 // const config = require("../config");
 
-const {trainee_schema, tutor_schema, report_schema, institutes_schema, academic_details_schema, admins_schema} = require("../schema/schema");;
+const {trainee_schema, tutor_schema, report_schema, institutes_schema, academic_details_schema, admins_schema,areas_schema} = require("../schema/schema");;
 
 
   module.exports = {
@@ -10,5 +10,6 @@ const {trainee_schema, tutor_schema, report_schema, institutes_schema, academic_
     Report: mongoose.model("report", report_schema),
     Institute: mongoose.model("institute", institutes_schema),
     AcademicDetail: mongoose.model("academicdetail", academic_details_schema),
-    Admin: mongoose.model("admin", admins_schema)
+    Admin: mongoose.model("admin", admins_schema),
+    areas: mongoose.model("areas", areas_schema)
 }

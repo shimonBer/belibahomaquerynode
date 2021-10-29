@@ -6,6 +6,7 @@ module.exports  = {
     report_schema: new mongoose.Schema(),
     institutes_schema: new mongoose.Schema(),
     academic_details_schema: new mongoose.Schema(),
-    admins_schema: new mongoose.Schema()
+    admins_schema: new mongoose.Schema(),
+    areas_schema: new mongoose.Schema()
 
 }

@@ -7,6 +7,7 @@ const generateReportMiddleware = require('../middleware/generateReport');
 const { setValueRedis, client } = require('../middleware/redis'); 
 const tutorsGenerator = require("../report_makers/staticReports/queryTutorHours");
 const kivunAGenerator = require("../report_makers/staticReports/queryKivunA");
+const MedavhimGenerator = require("../report_makers/staticReports/queryMedavhim");
 const kivunBGenerator = require("../report_makers/staticReports/queryKivunB");
 const kivunCGenerator = require("../report_makers/staticReports/queryKivunC");
 const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents");
@@ -18,6 +19,7 @@ const allMonthsHoursGenerator = require("../report_makers/staticReports/queryMon
 const reportGenerators = {
     queryTutorsHours: tutorsGenerator,
     queryKivunA: kivunAGenerator,
+    queryMedavhim: MedavhimGenerator,
     queryKivunB: kivunBGenerator,
     queryKivunC: kivunCGenerator,
     queryGeneralParticipents: generalParticipentsGenerator,

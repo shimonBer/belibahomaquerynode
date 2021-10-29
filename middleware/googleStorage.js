@@ -1,5 +1,5 @@
 const { Storage } = require('@google-cloud/storage');
-// const storage = new Storage({keyFilename: "auth/beliba-homa-reports-firebase.json"});
+ //const storage = new Storage({keyFilename: "auth/beliba-homa-reports-firebase.json"});
 const storage = new Storage({credentials: JSON.parse(process.env.FIREBASE_CONFIG)});
 const uploadFileToCloudStroage = async (req, res, next) => {
     const bucketName = 'beliba-homa-reports';
