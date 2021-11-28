@@ -43,9 +43,6 @@ router.post("/login", function (req, res) {
             return res.status(401).send({ auth: false, token: null })
 
         const expires = 86400
-        if (process.env.ENVIRONMENT !== "prod") {
-            require("dotenv").config({ path: "../.env" })
-        }
         var token = jwt.sign({ id: user._id }, process.env.SECRET, {
             expiresIn: expires, // expires in 24 hours
         })

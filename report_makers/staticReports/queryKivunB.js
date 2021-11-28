@@ -1,5 +1,5 @@
 var ObjectId = require('mongodb').ObjectId; 
-const asyncForEach = require("../../util/helpFunction");
+const asyncForEach = require("../../util/helpFunction").asyncForEach;
 const Reporter = require("../Reporter");
 
 const { Trainee } = require("../../models/models");

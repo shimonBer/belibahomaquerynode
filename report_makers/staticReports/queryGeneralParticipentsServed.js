@@ -1,7 +1,7 @@
 const lib = require('lodash');
 var mongoose = require("mongoose");
 const { Trainee, Tutor, Report, Institute, AcademicDetail } = require("../../models/models");
-const asyncForEach = require("../../util/helpFunction");
+const asyncForEach = require("../../util/helpFunction").asyncForEach;
 const Reporter = require("../Reporter");
 const fs = require('fs');
 

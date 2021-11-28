@@ -1,26 +1,18 @@
 const lib = require('lodash');
 const { Trainee, Tutor, Report, Institute, AcademicDetail } = require("../../models/models");
-const asyncForEach = require("../../util/helpFunction");
+const asyncForEach = require("../../util/helpFunction").asyncForEach;
 const Reporter = require("../Reporter");
 const fs = require('fs');
 const ObjectID = require('mongodb').ObjectID;
+const getMonthsUntil = require("../../util/helpFunction").getMonthsUntil;
 
 
 class GeneralParticipents extends Reporter{
     constructor(client, month) {
         super(client, month, 'generalParticipents.csv');
         this.bigTable = [];
-        fs.readFile('/Users/shimon.ber/beliba_homa_project/querying/report_makers/staticReports/months.json', (err, data) => {
-            this.months = JSON.parse(data);
-            if(!this.months.includes(month)){
-                this.months.push(month);
-                fs.writeFile("/Users/shimon.ber/beliba_homa_project/querying/report_makers/staticReports/months.json", JSON.stringify(this.months), () => {});
-
-            } else {
-                const index = this.months.indexOf(month);
-                this.months = this.months.slice(0, index + 1);
-            }
-        })
+        this.months = getMonthsUntil(month)
+       
     }
     
      createData = () => {

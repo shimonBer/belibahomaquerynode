@@ -9,16 +9,17 @@ const bodyParser = require("body-parser")
 const accessControls = require("./auth/accessControls")
 const app = express()
 
-const http = require("http").createServer(app)
-const io = require("socket.io")(http)
-const mongoQueries = require("mongodb-query-node");
+// const http = require("http").createServer(app)
+
+// const io = require("socket.io")(http)
+// const mongoQueries = require("mongodb-query-node");
 const cors = require("cors")
 
 const { tokenMiddleware } = require("./middleware/auth")
 const { reportRouter } = require("./routes/reports")
 const { authRouter } = require("./routes/auth")
 
-app.set("socketio", io)
+// app.set("socketio", io)
 app.use(cors({ origin: "*" }))
 app.use(accessControls)
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -33,19 +34,10 @@ const client = new MongoClient(process.env.ADDRESS, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
 })
-app.use("/api/queries", mongoQueries)
-
-io.on("connection", (socket) => {
-    console.log("connected socket")
-    io.on("disconnect", () =>{
-        console.log("socket disconnected")
-        socket.disconnect(0);
-    });
-})
+// app.use("/api/queries", mongoQueries)
 
 
-
-http.listen(port, () => {
+app.listen(port, () => {
     console.log("listening on port " + port)
     client
         .connect()
