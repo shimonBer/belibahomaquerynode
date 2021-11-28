@@ -10,4 +10,4 @@ auth/Beliba Homa Report-arye.json
 *.lock
 *-lock.json
 report_makers/staticReports/reports/*
-report_makers/staticReports/test/testLocalReport.js
+report_makers/staticReports/testLocalReport.js
