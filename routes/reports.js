@@ -12,8 +12,8 @@ const kivunCGenerator = require("../report_makers/staticReports/queryKivunC")
 const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents")
 const generalParticipentsServedGenerator = require("../report_makers/staticReports/queryGeneralParticipentsServed")
 const allMonthsHoursGenerator = require("../report_makers/staticReports/queryMonthlyHours")
-const generateKivunQuaterlyReport =
-    require("../report_makers/staticReports/generateQuaterlyKivunReports").generateReport
+const generateReport =
+    require("../report_makers/staticReports/generateQuaterlyKivunReports")
 var path = require("path")
 var fs = require("fs")
 
@@ -52,7 +52,7 @@ router.get("/staticReport", async function (req, res, next) {
     // res.sendStatus(200);
     if (req.query.reportType === "quaterlyKivunReport") {
         let filename = `${req.query.reportType}.xlsx`
-        await generateKivunQuaterlyReport(req.query.month, filename)
+        await generateReport(req.query.month, filename)
         let pathToFile = path.join(__dirname, `../reports/${filename}`)
         console.log(pathToFile)
         fs.exists(pathToFile, function (exists) {
