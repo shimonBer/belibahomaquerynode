@@ -3,7 +3,6 @@ var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
 const fs = require("fs")
-const archiver = require("archiver")
 const days = [
     "Sunday",
     "Monday",
@@ -15,20 +14,6 @@ const days = [
 ]
 
 let book = undefined
-function zipDirectory(source, out) {
-    const archive = archiver("zip", { zlib: { level: 9 } })
-    const stream = fs.createWriteStream(out)
-
-    return new Promise((resolve, reject) => {
-        archive
-            .directory(source, false)
-            .on("error", (err) => reject(err))
-            .pipe(stream)
-
-        stream.on("close", () => resolve())
-        archive.finalize()
-    })
-}
 
 function formatDateToReadableFormat(date) {
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`

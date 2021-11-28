@@ -3,7 +3,6 @@ var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
 const fs = require("fs")
-const archiver = require("archiver")
 const days = [
     "Sunday",
     "Monday",
