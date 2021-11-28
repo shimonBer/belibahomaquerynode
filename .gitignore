@@ -9,4 +9,4 @@ auth/Beliba Homa Report-arye.json
 **/.DS_Store
 *.lock
 *-lock.json
-report_makers/staticReports/*
+report_makers/staticReports/reports/*
