@@ -75,10 +75,9 @@ generateReport = async (startDate, filename) => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true })
     }
-    let [baseMonth, year] = startDate.split("-")
+    let [year, baseMonth] = startDate.split("-")
     let startMonth = parseInt(baseMonth)
     let finishMonth = startMonth + 2
-    startDate = `${year}-${baseMonth}`
     let finishDate = `${year}-${finishMonth}`
 
     let traineeTutorMapping = {}
