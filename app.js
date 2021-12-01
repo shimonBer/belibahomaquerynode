@@ -3,12 +3,11 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express")
 // const mongoose = require("mongoose");
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require("mongodb").MongoClient
 
 const bodyParser = require("body-parser")
 const accessControls = require("./auth/accessControls")
 const app = express()
-
 // const http = require("http").createServer(app)
 
 // const io = require("socket.io")(http)
@@ -36,14 +35,13 @@ const client = new MongoClient(process.env.ADDRESS, {
 })
 // app.use("/api/queries", mongoQueries)
 
-
 app.listen(port, () => {
     console.log("listening on port " + port)
     client
         .connect()
         .then(() => {
-            console.log("Connected to MongoDB...");
-            app.client = client;
+            console.log("Connected to MongoDB...")
+            app.client = client
         })
         .catch((err) => console.error("Could not connect to MongoDB...", err))
 })

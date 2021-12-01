@@ -11,5 +11,3 @@ auth/Beliba Homa Report-arye.json
 *-lock.json
 report_makers/staticReports/reports/*
 report_makers/staticReports/testLocalReport.js
-report_makers/staticReports/allTutors.js
-report_makers/staticReports/allTrainees.js

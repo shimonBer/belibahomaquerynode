@@ -12,8 +12,11 @@ const kivunCGenerator = require("../report_makers/staticReports/queryKivunC")
 const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents")
 const generalParticipentsServedGenerator = require("../report_makers/staticReports/queryGeneralParticipentsServed")
 const allMonthsHoursGenerator = require("../report_makers/staticReports/queryMonthlyHours")
-const generateReport =
-    require("../report_makers/staticReports/generateQuaterlyKivunReports")
+const generateReport = require("../report_makers/staticReports/generateQuaterlyKivunReports")
+const generateReportTrainees = require("../report_makers/staticReports/allTrainees")
+const generateReportTutors = require("../report_makers/staticReports/allTutors")
+
+
 var path = require("path")
 var fs = require("fs")
 
@@ -50,21 +53,45 @@ router.use(bodyParser.json())
 router.get("/staticReport", async function (req, res, next) {
     // const io = req.app.get('socketio');
     // res.sendStatus(200);
-    if (req.query.reportType === "quaterlyKivunReport") {
-        let filename = `${req.query.reportType}.xlsx`
-        await generateReport(req.query.month, filename)
-        let pathToFile = path.join(__dirname, `../reports/${filename}`)
-        console.log(pathToFile)
-        fs.exists(pathToFile, function (exists) {
-            if (exists) {
-                res.sendFile(pathToFile)
-            }
-        })
+    let filename = `${req.query.reportType}.xlsx`
+    let pathToFile = undefined
+    switch (req.query.reportType) {
+        case "quaterlyKivunReport":
+            await generateReport(req.query.month, filename)
+            pathToFile = path.join(__dirname, `../reports/${filename}`)
+            console.log(pathToFile)
+            fs.exists(pathToFile, function (exists) {
+                if (exists) {
+                    res.sendFile(pathToFile)
+                }
+            })
+            break
 
-        //set the archive name
-    } else {
-        next()
+        case "allTrainees":
+            await generateReportTrainees(req.query.month, filename)
+            pathToFile = path.join(__dirname, `../reports/${filename}`)
+            console.log(pathToFile)
+            fs.exists(pathToFile, function (exists) {
+                if (exists) {
+                    res.sendFile(pathToFile)
+                }
+            })
+            break
+
+        case "allTutors":
+            await generateReportTutors(req.query.month, filename)
+            pathToFile = path.join(__dirname, `../reports/${filename}`)
+            console.log(pathToFile)
+            fs.exists(pathToFile, function (exists) {
+                if (exists) {
+                    res.sendFile(pathToFile)
+                }
+            })
+            break
+        default:
+            next()
     }
+
 })
 
 router.get("/staticReport", function (req, res, next) {
