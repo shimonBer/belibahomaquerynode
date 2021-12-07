@@ -203,5 +203,5 @@ async function generateTrainees(month) {
     return
 }
 
-// module.exports = generateTrainees
-generateTrainees().then(() => console.log())
+module.exports = generateTrainees
+// generateTrainees().then(() => console.log())
