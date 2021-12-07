@@ -169,6 +169,11 @@ generateReport = async (startDate, filename) => {
                     name: tutor.fname + " " + tutor.lname,
                     phone: tutor.phoneA,
                 }
+            } else {
+                traineeTutorMapping[trainee.id] = {
+                    name: "No Tutor",
+                    phone: "No Tutor",
+                }
             }
         }
     })
@@ -471,4 +476,4 @@ generateReport = async (startDate, filename) => {
 }
 
 module.exports = generateReport
-// generateReport("2021-10").then(() => console.log())
+// generateReport("2021-10", "generateQuaterlyKivun").then(() => console.log())
