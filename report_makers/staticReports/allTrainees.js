@@ -3,12 +3,17 @@ var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
 const formatDate = require("../../util/helpFunction").formatDate
+var fs = require('fs');
+
 const generateXlsxFile = (report, filename) => {
     return new Promise((resolve, reject) => {
         const book = XLSX.utils.book_new()
 
         const sheet = XLSX.utils.aoa_to_sheet(report)
         XLSX.utils.book_append_sheet(book, sheet, "sheet1")
+        if (!fs.existsSync(`../../reports`)){
+            fs.mkdirSync(`../../reports`);
+        }
         XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
         resolve()
     })
@@ -198,5 +203,5 @@ async function generateTrainees(month) {
     return
 }
 
-module.exports = generateTrainees
-// generateReport().then(() => console.log())
+// module.exports = generateTrainees
+generateTrainees().then(() => console.log())
