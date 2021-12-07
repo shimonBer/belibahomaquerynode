@@ -4,6 +4,8 @@ const lib = require("lodash")
 const XLSX = require("xlsx")
 const formatDate = require("../../util/helpFunction").formatDate
 var fs = require('fs');
+var path = require("path")
+
 const generateXlsxFile = (report, filename) => {
     return new Promise((resolve, reject) => {
         const book = XLSX.utils.book_new()
@@ -13,7 +15,8 @@ const generateXlsxFile = (report, filename) => {
         // if (!fs.existsSync(`../../reports`)){
         //     fs.mkdirSync(`../../reports`);
         // }
-        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
+        let pathToFile = path.join(__dirname, `../../reports/${filename}.xlsx`)
+        XLSX.writeFile(book, pathToFile)
         resolve()
     })
 }

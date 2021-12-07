@@ -2,6 +2,8 @@ var MongoClient = require("mongodb").MongoClient
 var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
+var path = require("path")
+
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config({ path: "../../.env" })
 }
@@ -17,7 +19,8 @@ const generateXlsxFile = (report, filename) => {
         // if (!fs.existsSync(`../../reports`)){
         //     fs.mkdirSync(`../../reports`);
         // }
-        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
+        let pathToFile = path.join(__dirname, `../../reports/${filename}.xlsx`)
+        XLSX.writeFile(book, pathToFile)
         resolve()
     })
 }

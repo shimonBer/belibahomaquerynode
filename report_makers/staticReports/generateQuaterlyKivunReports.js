@@ -3,6 +3,8 @@ var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
 const fs = require("fs")
+var path = require("path")
+
 const days = [
     "Sunday",
     "Monday",
@@ -32,7 +34,8 @@ const saveSheeToFile = (filename) => {
         // if (!fs.existsSync(`../../reports`)) {
         //     fs.mkdirSync(`../../reports`)
         // }
-        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
+        let pathToFile = path.join(__dirname, `../../reports/${filename}.xlsx`)
+        XLSX.writeFile(book, pathToFile)
 
         resolve()
     })
