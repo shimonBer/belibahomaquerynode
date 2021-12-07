@@ -9,10 +9,14 @@ const generateXlsxFile = (report, filename) => {
 
         const sheet = XLSX.utils.aoa_to_sheet(report)
         XLSX.utils.book_append_sheet(book, sheet, "sheet1")
-        XLSX.writeFile(book, `reports/${filename}.xlsx`)
+        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
         resolve()
     })
 }
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: "../../.env" })
+}
+
 let monngoAddress = process.env.ADDRESS
 let client = undefined
 
@@ -41,6 +45,7 @@ async function generateTrainees(month) {
         [
             "First Name",
             "Last Name",
+            "ID",
             "mobile",
             "mobile2",
             "email",
@@ -81,7 +86,7 @@ async function generateTrainees(month) {
             "workStatus",
             "workTitle",
             "yeshivaTimes",
-            "Sign-date"
+            "Sign-date",
         ],
     ]
 
@@ -135,6 +140,7 @@ async function generateTrainees(month) {
         traineesTable.push([
             trainee.fname,
             trainee.lname,
+            trainee.id,
             trainee.phoneA,
             trainee.phoneB,
             trainee.email,
@@ -183,7 +189,7 @@ async function generateTrainees(month) {
             trainee.workStatus,
             trainee.workTitle,
             trainee.yeshivaTimes,
-            formatDate(trainee._id.getTimestamp())
+            formatDate(trainee._id.getTimestamp()),
         ])
     })
 

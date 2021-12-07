@@ -2,6 +2,10 @@ var MongoClient = require("mongodb").MongoClient
 var ObjectId = require("mongodb").ObjectId
 const lib = require("lodash")
 const XLSX = require("xlsx")
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: "../../.env" })
+}
+
 const formatDate = require("../../util/helpFunction").formatDate
 const getHour = require("../../util/helpFunction").getHour
 const generateXlsxFile = (report, filename) => {
@@ -10,7 +14,7 @@ const generateXlsxFile = (report, filename) => {
 
         const sheet = XLSX.utils.aoa_to_sheet(report)
         XLSX.utils.book_append_sheet(book, sheet, "sheet1")
-        XLSX.writeFile(book, `reports/${filename}.xlsx`)
+        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
         resolve()
     })
 }
@@ -53,11 +57,13 @@ async function generateTutors(startDate, finishDate) {
         [
             "First Name",
             "Last Name",
+            "ID",
             "mobile",
             "email",
             "address-as-in-id",
             "address",
             "academic plan",
+            "scholarship",
             "Institution",
             "Main study",
             "activityArea",
@@ -135,14 +141,41 @@ async function generateTutors(startDate, finishDate) {
         let unavailableTimes = ""
         if (trainee.unavailableTimes) {
             trainee.unavailableTimes.forEach((time) => {
-                unavailableTimes = unavailableTimes + `${days[time.day - 1]}: ${getHour(time.Time.start)} - ${getHour(time.Time.end)}, `
+                unavailableTimes =
+                    unavailableTimes +
+                    `${days[time.day - 1]}: ${getHour(
+                        time.Time.start
+                    )} - ${getHour(time.Time.end)}, `
             })
+        }
 
+        let typeOfScholar = ""
+        if (trainee.isCityScholarship) {
+            typeOfScholar = "City Scholarship"
+        } else {
+            if (trainee.isImpact) {
+                typeOfScholar = "Impact"
+            } else {
+                if (trainee.isShachak) {
+                    typeOfScholar = "Shachak"
+                } else {
+                    if (trainee.isForAcademicPoints) {
+                        typeOfScholar = "Academic Points"
+                    } else {
+                        if (trainee.isFromUniformToStudies) {
+                            typeOfScholar = "From Uniform To Studies"
+                        } else {
+                            typeOfScholar = "Other"
+                        }
+                    }
+                }
+            }
         }
 
         traineesTable.push([
             trainee.fname,
             trainee.lname,
+            trainee.id,
             trainee.phoneA,
             trainee.email,
             trainee.realAddress &&
@@ -158,7 +191,7 @@ async function generateTutors(startDate, finishDate) {
                     " , " +
                     trainee.currentAddress.city,
             trainee.academicPlan,
-
+            typeOfScholar,
             institute,
             mainnStudy,
             activityArea,
@@ -195,5 +228,5 @@ async function generateTutors(startDate, finishDate) {
     return
 }
 
-// main().then(() => console.log())
+// generateTutors().then(() => console.log())
 module.exports = generateTutors

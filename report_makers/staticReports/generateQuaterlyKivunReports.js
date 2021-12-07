@@ -29,7 +29,8 @@ const addSheetToXlsxFile = (report, sheetName) => {
 
 const saveSheeToFile = (filename) => {
     return new Promise((resolve, reject) => {
-        XLSX.writeFile(book, `reports/${filename}`)
+        XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
+
         resolve()
     })
 }
