@@ -5,7 +5,9 @@ const XLSX = require("xlsx")
 const formatDate = require("../../util/helpFunction").formatDate
 var fs = require('fs');
 var path = require("path")
-
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: "../../.env" })
+}
 const generateXlsxFile = (report, filename) => {
     return new Promise((resolve, reject) => {
         const book = XLSX.utils.book_new()
@@ -20,9 +22,7 @@ const generateXlsxFile = (report, filename) => {
         resolve()
     })
 }
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config({ path: "../../.env" })
-}
+
 
 let monngoAddress = process.env.ADDRESS
 let client = undefined

@@ -4,7 +4,9 @@ const lib = require("lodash")
 const XLSX = require("xlsx")
 const fs = require("fs")
 var path = require("path")
-
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config({ path: "../../.env" })
+}
 const days = [
     "Sunday",
     "Monday",
@@ -162,9 +164,11 @@ generateReport = async (startDate, filename) => {
                     tutor._id.toString() == report.tutor_id.toString()
                 )
             })
-            traineeTutorMapping[trainee.id] = {
-                name: tutor.fname + " " + tutor.lname,
-                phone: tutor.phoneA,
+            if (tutor) {
+                traineeTutorMapping[trainee.id] = {
+                    name: tutor.fname + " " + tutor.lname,
+                    phone: tutor.phoneA,
+                }
             }
         }
     })
@@ -467,3 +471,4 @@ generateReport = async (startDate, filename) => {
 }
 
 module.exports = generateReport
+// generateReport("2021-10").then(() => console.log())
