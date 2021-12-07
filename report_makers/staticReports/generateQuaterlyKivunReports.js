@@ -29,9 +29,9 @@ const addSheetToXlsxFile = (report, sheetName) => {
 
 const saveSheeToFile = (filename) => {
     return new Promise((resolve, reject) => {
-        if (!fs.existsSync(`../../reports`)) {
-            fs.mkdirSync(`../../reports`)
-        }
+        // if (!fs.existsSync(`../../reports`)) {
+        //     fs.mkdirSync(`../../reports`)
+        // }
         XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
 
         resolve()

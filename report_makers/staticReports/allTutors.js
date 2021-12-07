@@ -14,9 +14,9 @@ const generateXlsxFile = (report, filename) => {
 
         const sheet = XLSX.utils.aoa_to_sheet(report)
         XLSX.utils.book_append_sheet(book, sheet, "sheet1")
-        if (!fs.existsSync(`../../reports`)){
-            fs.mkdirSync(`../../reports`);
-        }
+        // if (!fs.existsSync(`../../reports`)){
+        //     fs.mkdirSync(`../../reports`);
+        // }
         XLSX.writeFile(book, `../../reports/${filename}.xlsx`)
         resolve()
     })
