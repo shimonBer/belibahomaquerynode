@@ -1,13 +1,13 @@
 module.exports = function (req, res, next) {
     // Website you wish to allow to connect
-    if (process.env.NODE_ENV == "local") {
-        res.setHeader("Access-Control-Allow-Origin", "*")
-    } else {
-        res.setHeader(
-            "Access-Control-Allow-Origin",
-            "https://belibahomaquery.herokuapp.com"
-        )
-    }
+    // if (process.env.NODE_ENV == "local") {
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    // } else {
+    //     res.setHeader(
+    //         "Access-Control-Allow-Origin",
+    //         "https://belibahomaquery.herokuapp.com"
+    //     )
+    // }
 
     // Request methods you wish to allow
     res.setHeader(
