@@ -30,6 +30,7 @@
     "redis": "^3.0.2",
     "redis-server": "^1.2.2",
     "socket.io": "^2.3.0",
+    "uuid": "^8.3.2",
     "xlsx": "^0.15.6"
   },
   "devDependencies": {

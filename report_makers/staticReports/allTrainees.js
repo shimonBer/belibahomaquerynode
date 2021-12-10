@@ -17,7 +17,7 @@ const generateXlsxFile = (report, filename) => {
         // if (!fs.existsSync(`../../reports`)){
         //     fs.mkdirSync(`../../reports`);
         // }
-        let pathToFile = path.join(__dirname, `../../reports/${filename}.xlsx`)
+        let pathToFile = path.join(__dirname, `../../reports/${filename}`)
         XLSX.writeFile(book, pathToFile)
         resolve()
     })
@@ -47,7 +47,7 @@ async function getTrainess(conditionns, fields) {
     return trainees
 }
 
-async function generateTrainees(month) {
+async function generateTrainees(month, filename) {
     let traineesTable = [
         [
             "First Name",
@@ -200,7 +200,7 @@ async function generateTrainees(month) {
         ])
     })
 
-    await generateXlsxFile(traineesTable, "allTrainees")
+    await generateXlsxFile(traineesTable, filename)
 
     return
 }

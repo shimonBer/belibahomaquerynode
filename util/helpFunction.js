@@ -44,9 +44,30 @@ function getMonthsUntil(date) {
     return months
 }
 
+
+function getMonthsForFullYear(date) {
+  let year = parseInt(date.split("-")[0])
+  let secondYear = year + 1
+
+  let months = []
+  for (let i = 7; i <= 12; i++) {
+    
+    months.push(`${year}-${i}`)
+      
+  }
+  for (i = 1; i <= 6; i++) {
+    
+    months.push(`${secondYear}-${i}`)
+      
+  }
+
+  return months
+}
+
 module.exports = {
     asyncForEach,
     getMonthsUntil,
+    getMonthsForFullYear,
     formatDate,
     getHour
 }

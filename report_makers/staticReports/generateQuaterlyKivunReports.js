@@ -36,7 +36,7 @@ const saveSheeToFile = (filename) => {
         // if (!fs.existsSync(`../../reports`)) {
         //     fs.mkdirSync(`../../reports`)
         // }
-        let pathToFile = path.join(__dirname, `../../reports/${filename}.xlsx`)
+        let pathToFile = path.join(__dirname, `../../reports/${filename}`)
         XLSX.writeFile(book, pathToFile)
 
         resolve()
