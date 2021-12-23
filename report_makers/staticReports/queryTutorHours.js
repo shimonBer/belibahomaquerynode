@@ -72,19 +72,19 @@ class Tutors extends Reporter {
             finalArr.push(totalTeaching, total - totalTeaching, total)
             const fullName = `${tutor.lname} ${tutor.fname}`
             let typeOfScholar = ""
-            if (trainee.isCityScholarship) {
+            if (tutor.isCityScholarship) {
                 typeOfScholar = "City Scholarship"
             } else {
-                if (trainee.isImpact) {
+                if (tutor.isImpact) {
                     typeOfScholar = "Impact"
                 } else {
-                    if (trainee.isShachak) {
+                    if (tutor.isShachak) {
                         typeOfScholar = "Shachak"
                     } else {
-                        if (trainee.isForAcademicPoints) {
+                        if (tutor.isForAcademicPoints) {
                             typeOfScholar = "Academic Points"
                         } else {
-                            if (trainee.isFromUniformToStudies) {
+                            if (tutor.isFromUniformToStudies) {
                                 typeOfScholar = "From Uniform To Studies"
                             } else {
                                 typeOfScholar = "Other"
