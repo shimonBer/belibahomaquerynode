@@ -29,12 +29,12 @@ class Tutors extends Reporter {
             const tutors = await this.client
                 .db("test")
                 .collection("tutors")
-                .find({}, "fname lname isImpact phoneA")
+                .find({ isActive: true }, "fname lname isImpact phoneA")
                 .toArray()
             Promise.all(tutors.map((tutor) => this.getFullHours(tutor))).then(
                 (result) => {
                     this.bigTable = result
-                    const headers = ["Full name", "ID", "Mobile"]
+                    const headers = ["Full name", "ID", "Mobile", "scholarType"]
                     this.months.forEach((month) => {
                         headers.push(
                             month + "-studying",
@@ -71,7 +71,29 @@ class Tutors extends Reporter {
             })
             finalArr.push(totalTeaching, total - totalTeaching, total)
             const fullName = `${tutor.lname} ${tutor.fname}`
-            finalArr.unshift(fullName, tutor.id, tutor.phoneA)
+            let typeOfScholar = ""
+            if (trainee.isCityScholarship) {
+                typeOfScholar = "City Scholarship"
+            } else {
+                if (trainee.isImpact) {
+                    typeOfScholar = "Impact"
+                } else {
+                    if (trainee.isShachak) {
+                        typeOfScholar = "Shachak"
+                    } else {
+                        if (trainee.isForAcademicPoints) {
+                            typeOfScholar = "Academic Points"
+                        } else {
+                            if (trainee.isFromUniformToStudies) {
+                                typeOfScholar = "From Uniform To Studies"
+                            } else {
+                                typeOfScholar = "Other"
+                            }
+                        }
+                    }
+                }
+            }
+            finalArr.unshift(fullName, tutor.id, tutor.phoneA, typeOfScholar)
             resolve(finalArr)
         })
     }
