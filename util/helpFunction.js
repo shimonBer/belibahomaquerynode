@@ -16,20 +16,22 @@ function formatDate(date) {
     return [day, month, year].join("/")
 }
 
-function getHour(d){
-  if(!d){
-    return ""
-  }
-  function addZero(i) {
-    if (i < 10) {i = "0" + i}
-    return i;
-  }
-  
-  let h = addZero(d.getHours());
-  let m = addZero(d.getMinutes());
-  let s = addZero(d.getSeconds());
-  let time = h + ":" + m + ":" + s;
-  return time
+function getHour(d) {
+    if (!d) {
+        return ""
+    }
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i
+        }
+        return i
+    }
+
+    let h = addZero(d.getHours())
+    let m = addZero(d.getMinutes())
+    let s = addZero(d.getSeconds())
+    let time = h + ":" + m + ":" + s
+    return time
 }
 
 function getMonthsUntil(date) {
@@ -44,24 +46,33 @@ function getMonthsUntil(date) {
     return months
 }
 
+function getMonthsBetween(from, to) {
+    let [fromYear, fromMonth] = from.split("-")
+    let [toYear, toMonth] = to.split("-")
 
+    let months = []
+    for (let i = parseInt(fromYear); i <= parseInt(toYear); i++) {
+        for (let j = 1; j <= 12; j++) {
+            months.push(`${i}-${j}`)
+        }
+    }
+    months = months.slice(months.indexOf(from), months.indexOf(to) + 1)
+
+    return months
+}
 function getMonthsForFullYear(date) {
-  let year = parseInt(date.split("-")[0])
-  let secondYear = year + 1
+    let year = parseInt(date.split("-")[0])
+    let secondYear = year + 1
 
-  let months = []
-  for (let i = 7; i <= 12; i++) {
-    
-    months.push(`${year}-${i}`)
-      
-  }
-  for (i = 1; i <= 6; i++) {
-    
-    months.push(`${secondYear}-${i}`)
-      
-  }
+    let months = []
+    for (let i = 7; i <= 12; i++) {
+        months.push(`${year}-${i}`)
+    }
+    for (i = 1; i <= 6; i++) {
+        months.push(`${secondYear}-${i}`)
+    }
 
-  return months
+    return months
 }
 
 module.exports = {
@@ -69,5 +80,6 @@ module.exports = {
     getMonthsUntil,
     getMonthsForFullYear,
     formatDate,
-    getHour
+    getHour,
+    getMonthsBetween
 }

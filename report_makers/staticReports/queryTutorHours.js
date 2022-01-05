@@ -5,21 +5,17 @@ const Reporter = require("../Reporter")
 const getMonthsUntil = require("../../util/helpFunction").getMonthsUntil
 const getMonthsForFullYear =
     require("../../util/helpFunction").getMonthsForFullYear
+const getMonthsBetween = require("../../util/helpFunction").getMonthsBetween
 const { Tutor, Report } = require("../../models/models")
 
 class Tutors extends Reporter {
-    constructor(client, month) {
-        super(client, month, "tutors.csv")
+    constructor(client, from, to) {
+        super(client, from, to, "tutors.csv")
         this.bigTable = []
-        this.months = getMonthsForFullYear(month)
+        this.months = getMonthsBetween(from, to)
     }
     createData = () => {
         return new Promise(async (resolve) => {
-            // const trainees = await this.client
-            //     .db("test")
-            //     .collection("trainees")
-            //     .find({ isServed: true }, "fname lname institute isServed")
-            //     .toArray()
             resolve()
         })
     }
@@ -124,9 +120,9 @@ class Tutors extends Reporter {
     }
 }
 
-tutorsSingelton = (client, month) => {
+tutorsSingelton = (client, from, to) => {
     if (!Tutors.tutorsOnlyInstance) {
-        const tutorsOnlyInstance = new Tutors(client, month)
+        const tutorsOnlyInstance = new Tutors(client, from, to)
         return tutorsOnlyInstance
     }
     return Tutors.tutorsOnlyInstance

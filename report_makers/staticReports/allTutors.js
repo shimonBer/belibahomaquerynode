@@ -58,7 +58,7 @@ async function getTutors(conditionns, fields) {
     return tutors
 }
 
-async function generateTutors(month, filename) {
+async function generateTutors(filename) {
     let traineesTable = [
         [
             "First Name",

@@ -78,40 +78,40 @@ router.get("/staticReport", async function (req, res, next) {
     switch (req.query.reportType) {
         case "quaterlyKivunReport":
             reportId = uuid.v4()
-            reportName = `${req.query.reportType}_${req.query.month}`
+            reportName = `${req.query.reportType}_${req.query.from}_${req.query.to}`
             filename = `${reportName}.xlsx`
             reportDict[reportId] = path.join(
                 __dirname,
                 `../reports/${filename}`
             )
             res.send(reportId)
-            await generateReport(req.query.month, filename)
+            await generateReport(req.query.from, req.query.to, filename)
 
             break
 
         case "allTrainees":
             reportId = uuid.v4()
-            reportName = `${req.query.reportType}_${req.query.month}`
+            reportName = `${req.query.reportType}_${req.query.from}_${req.query.to}`
             filename = `${reportName}.xlsx`
             reportDict[reportId] = path.join(
                 __dirname,
                 `../reports/${filename}`
             )
             res.send(reportId)
-            await generateReportTrainees(req.query.month, filename)
+            await generateReportTrainees(filename)
 
             break
 
         case "allTutors":
             reportId = uuid.v4()
-            reportName = `${req.query.reportType}_${req.query.month}`
+            reportName = `${req.query.reportType}_${req.query.from}_${req.query.to}`
             filename = `${reportName}.xlsx`
             reportDict[reportId] = path.join(
                 __dirname,
                 `../reports/${filename}`
             )
             res.send(reportId)
-            await generateReportTutors(req.query.month, filename)
+            await generateReportTutors(filename)
 
             break
         default:
@@ -124,13 +124,13 @@ router.get("/staticReport", function (req, res, next) {
     // res.sendStatus(200);
 
     let reportId = uuid.v4()
-    let reportName = `${req.query.reportType}_${req.query.month}`
+    let reportName = `${req.query.reportType}_${req.query.from}_${req.query.to}`
     let filename = `${reportName}.xlsx`
     reportDict[reportId] = path.join(__dirname, `../reports/${filename}`)
     res.send(reportId)
 
     req.query.reportName = `${req.query.reportType}_${req.query.month}`
-    req.query.filename = `${req.query.reportName}.xlsx`
+    req.query.filename = filename
     req.query.reporter = reportGenerators[req.query.reportType]
     next()
 })

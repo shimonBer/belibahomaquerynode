@@ -77,17 +77,17 @@ async function getTrainess(conditionns, fields) {
     return trainees
 }
 
-generateReport = async (startDate, filename) => {
+generateReport = async (startDate, finishDate,  filename) => {
     book = XLSX.utils.book_new()
     let dir = "./reports"
 
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true })
     }
-    let [year, baseMonth] = startDate.split("-")
-    let startMonth = parseInt(baseMonth)
-    let finishMonth = startMonth + 2
-    let finishDate = `${year}-${finishMonth}`
+    // let [year, baseMonth] = startDate.split("-")
+    let startMonth = parseInt(startDate.split("-")[1])
+    // let finishMonth = startMonth + 2
+    // let finishDate = `${year}-${finishMonth}`
 
     let traineeTutorMapping = {}
 

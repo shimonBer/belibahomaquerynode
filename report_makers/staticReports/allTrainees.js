@@ -47,7 +47,7 @@ async function getTrainess(conditionns, fields) {
     return trainees
 }
 
-async function generateTrainees(month, filename) {
+async function generateTrainees(filename) {
     let traineesTable = [
         [
             "First Name",
