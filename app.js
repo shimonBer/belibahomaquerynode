@@ -27,7 +27,8 @@ app.use("/api/auth", authRouter)
 app.use(tokenMiddleware)
 app.use("/api/reports", reportRouter)
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
+console.log(process.env.ADDRESS)
 
 const client = new MongoClient(process.env.ADDRESS, {
     useUnifiedTopology: true,
