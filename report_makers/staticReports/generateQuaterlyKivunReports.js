@@ -143,11 +143,11 @@ generateReport = async (startDate, finishDate,  filename) => {
         fields_for_reporters
     )
 
-    reportersTrainees = reportersTrainees.filter(
-        (trainee) =>
-            reporters_allowed_cities.includes(trainee.realAddress.city) ||
-            trainee.isRegisteredToKivun == true
-    )
+    // reportersTrainees = reportersTrainees.filter(
+    //     (trainee) =>
+    //         reporters_allowed_cities.includes(trainee.realAddress.city) ||
+    //         trainee.isRegisteredToKivun == true
+    // )
     let reports = await client
         .db("test")
         .collection("reports")
