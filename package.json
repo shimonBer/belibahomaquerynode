@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./app.js"
@@ -16,6 +19,7 @@
     "body-parser": "^1.1.0",
     "cors": "^2.8.5",
     "dateformat": "^3.0.3",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "firebase": "^7.12.0",
     "firebase-admin": "^8.10.0",

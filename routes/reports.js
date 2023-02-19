@@ -12,6 +12,7 @@ const kivunCGenerator = require("../report_makers/staticReports/queryKivunC")
 const generalParticipentsGenerator = require("../report_makers/staticReports/queryGeneralParticipents")
 const generalParticipentsServedGenerator = require("../report_makers/staticReports/queryGeneralParticipentsServed")
 const allMonthsHoursGenerator = require("../report_makers/staticReports/queryMonthlyHours")
+const generateMaayanYearlyHours = require("../report_makers/staticReports/maayanYearlyHours")
 const generateReport = require("../report_makers/staticReports/generateQuaterlyKivunReports")
 const generateReportTrainees = require("../report_makers/staticReports/allTrainees")
 const generateReportTutors = require("../report_makers/staticReports/allTutors")
@@ -27,7 +28,7 @@ const reportGenerators = {
     queryKivunC: kivunCGenerator,
     queryGeneralParticipents: generalParticipentsGenerator,
     queryGeneralParticipentsServed: generalParticipentsServedGenerator,
-    queryAllMonthsHoursGenerator: allMonthsHoursGenerator,
+    queryAllMonthsHoursGenerator: allMonthsHoursGenerator
 }
 
 let reportDict = {}
@@ -114,6 +115,19 @@ router.get("/staticReport", async function (req, res, next) {
             await generateReportTutors(filename)
 
             break
+        case "maayanBamidbarYearly":
+                reportId = uuid.v4()
+                let year = req.query.month.split('-')[0]
+                reportName = `${req.query.reportType}_${year}`
+                filename = `${reportName}.xlsx`
+                reportDict[reportId] = path.join(
+                    __dirname,
+                    `../reports/${filename}`
+                )
+                res.send(reportId)
+                await generateMaayanYearlyHours(filename, year)
+    
+                break
         default:
             next()
     }

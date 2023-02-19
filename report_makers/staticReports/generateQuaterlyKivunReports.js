@@ -55,10 +55,17 @@ let reporters_allowed_cities = [
     "תל ציון",
 ]
 
+// let fields_for_reporters =
+//     "fname lname id realAddress email phoneA needsHelpIn studyYear institute mainStudy isRegisteredToKivun realAddress"
+
+// let fields_for_nonn_reporters =
+//     "fname lname email needsHelpIn institute realAddress"
+
 let fields_for_reporters =
-    "fname lname id realAddress email phoneA needsHelpIn studyYear institute mainStudy isRegisteredToKivun realAddress"
+    "fname lname id email"
+    
 let fields_for_nonn_reporters =
-    "fname lname email needsHelpIn institute realAddress"
+    "fname lname email"
 
 async function connnectClient() {
     client = new MongoClient(monngoAddress, {
@@ -71,7 +78,7 @@ async function connnectClient() {
 async function getTrainess(conditionns, fields) {
     const trainees = await client
         .db("test")
-        .collection("trainees")
+        .collection("users")
         .find(conditionns, fields)
         .toArray()
     return trainees
@@ -96,12 +103,12 @@ generateReport = async (startDate, finishDate,  filename) => {
             "Name",
             "ID",
             "email",
-            "address",
-            "mobile",
-            "needs-help-in",
-            "Institution",
-            "Main-study",
-            "study-year",
+            // "address",
+            // "mobile",
+            // "needs-help-in",
+            // "Institution",
+            // "Main-study",
+            // "study-year",
             "Tutor-name",
             "Tutor-mobile",
             startMonth + "-month-study-hours",
@@ -112,7 +119,7 @@ generateReport = async (startDate, finishDate,  filename) => {
     ]
 
     await connnectClient()
-    let tutors = await client.db("test").collection("tutors").find({}).toArray()
+    let tutors = await client.db("test").collection("users").find({}).toArray()
     const institutes = await client
         .db("test")
         .collection("institutes")
@@ -125,8 +132,11 @@ generateReport = async (startDate, finishDate,  filename) => {
         .toArray()
 
     // reporters report
+    // let conndition_for_reporters = {
+    //     institute: { $ne: new ObjectId("5d6f643b3acdb6001790e08f") },
+    // }
     let conndition_for_reporters = {
-        institute: { $ne: new ObjectId("5d6f643b3acdb6001790e08f") },
+        isRegisteredToKivun: true,
     }
     let reportersTrainees = await getTrainess(
         conndition_for_reporters,
@@ -267,16 +277,16 @@ generateReport = async (startDate, finishDate,  filename) => {
             trainee.fname + " " + trainee.lname,
             trainee.id,
             trainee.email,
-            trainee.realAddress.street +
-                " , " +
-                trainee.realAddress.neighborhood +
-                " , " +
-                trainee.realAddress.city,
-            trainee.phoneA,
-            trainee.needsHelpIn.replace(/(\r\n|\n|\r)/gm, ""),
-            institute,
-            mainnStudy,
-            mainnStudy.trim() == "מכינה" ? mainnStudy : trainee.studyYear,
+            // trainee.realAddress.street +
+            //     " , " +
+            //     trainee.realAddress.neighborhood +
+            //     " , " +
+            //     trainee.realAddress.city,
+            // trainee.phoneA,
+            // trainee.needsHelpIn.replace(/(\r\n|\n|\r)/gm, ""),
+            // institute,
+            // mainnStudy,
+            // mainnStudy.trim() == "מכינה" ? mainnStudy : trainee.studyYear,
             traineeTutorMapping[trainee.id] &&
                 traineeTutorMapping[trainee.id].name,
             traineeTutorMapping[trainee.id] &&
@@ -444,34 +454,34 @@ generateReport = async (startDate, finishDate,  filename) => {
             )
         }
     )
-    nonReportersTrainessFiltered = nonReportersTrainessFiltered.filter(
-        (reporter) => !allIds.includes(reporter.id)
-    )
-    let nnonReportersTable = [
-        ["Name", "email", "Institution", "needs-help-in", "Non-report-reason"],
-    ]
-    nonReportersTrainessFiltered.forEach((trainee) => {
-        let institute = ""
-        let instituteRes = institutes.find(
-            (institute) =>
-                institute._id.toString() == trainee.institute.toString()
-        )
-        if (instituteRes) {
-            institute = instituteRes.name
-        }
+    // nonReportersTrainessFiltered = nonReportersTrainessFiltered.filter(
+    //     (reporter) => !allIds.includes(reporter.id)
+    // )
+    // let nnonReportersTable = [
+    //     ["Name", "email", "Institution", "needs-help-in", "Non-report-reason"],
+    // ]
+    // nonReportersTrainessFiltered.forEach((trainee) => {
+    //     let institute = ""
+    //     let instituteRes = institutes.find(
+    //         (institute) =>
+    //             institute._id.toString() == trainee.institute.toString()
+    //     )
+    //     if (instituteRes) {
+    //         institute = instituteRes.name
+    //     }
 
-        nnonReportersTable.push([
-            trainee.fname + " " + trainee.lname,
-            trainee.email,
-            institute,
-            trainee.needsHelpIn.replace(/(\r\n|\n|\r)/gm, ""),
-            institute ==
-            "האוניברסיטה העברית - מכון מגיד - המכינה החרדית של האוניברסיטה העברית"
-                ? "לומד במכינה החרדית של האוניברסיטה העברית, שמדווחת לחוד למרכז כיוון"
-                : "על אף שלומד ופעיל באזור ירושלים, לפי תעודת הזהות שלו אינו תושב אחד הישובים המזכים אותו בשירותיו של מרכז כיוון",
-        ])
-    })
-    await addSheetToXlsxFile(nnonReportersTable, "non-reporters")
+    //     nnonReportersTable.push([
+    //         trainee.fname + " " + trainee.lname,
+    //         trainee.email,
+    //         institute,
+    //         trainee.needsHelpIn.replace(/(\r\n|\n|\r)/gm, ""),
+    //         institute ==
+    //         "האוניברסיטה העברית - מכון מגיד - המכינה החרדית של האוניברסיטה העברית"
+    //             ? "לומד במכינה החרדית של האוניברסיטה העברית, שמדווחת לחוד למרכז כיוון"
+    //             : "על אף שלומד ופעיל באזור ירושלים, לפי תעודת הזהות שלו אינו תושב אחד הישובים המזכים אותו בשירותיו של מרכז כיוון",
+    //     ])
+    // })
+    // await addSheetToXlsxFile(nnonReportersTable, "non-reporters")
     await saveSheeToFile(filename)
 }
 
