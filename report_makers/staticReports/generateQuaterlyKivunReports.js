@@ -257,21 +257,21 @@ generateReport = async (startDate, finishDate,  filename) => {
         allIds.includes(trainee.id)
     )
     reportersTrainees.forEach((trainee) => {
-        let institute = "",
-            mainnStudy = ""
-        let instituteRes = institutes.find(
-            (institute) =>
-                institute._id.toString() == trainee.institute.toString()
-        )
-        if (instituteRes) {
-            institute = instituteRes.name
-        }
-        let mainStudyRes = mainStudy.find(
-            (study) => study._id.toString() == trainee.mainStudy.toString()
-        )
-        if (mainStudyRes) {
-            mainnStudy = mainStudyRes.name
-        }
+    //     let institute = "",
+    //         mainnStudy = ""
+    //     let instituteRes = institutes.find(
+    //         (institute) =>
+    //             institute._id.toString() == trainee.institute.toString()
+    //     )
+    //     if (instituteRes) {
+    //         institute = instituteRes.name
+    //     }
+    //     let mainStudyRes = mainStudy.find(
+    //         (study) => study._id.toString() == trainee.mainStudy.toString()
+    //     )
+    //     if (mainStudyRes) {
+    //         mainnStudy = mainStudyRes.name
+    //     }
 
         reportersTable.push([
             trainee.fname + " " + trainee.lname,
